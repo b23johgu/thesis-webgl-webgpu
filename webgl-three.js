@@ -48,25 +48,26 @@ const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff00ff , metalness: 0.5, roughness: 0.0 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 sphere.position.y = 1; //makes sphere appear to be on top of floor
-sphere.position.z = 18; //sphere begins at the nearest part of floor, floor is 40 (20 on each side of middle)
+sphere.position.z = 19; //sphere begins at the nearest part of floor, floor is 40 (20 on each side of middle)
 sphere.castShadow = true;
 scene.add( sphere );
 
 /* Create obstacles */
-const boxGeometry = new THREE.BoxGeometry( 5, 3, 1 ); // width, height, depth of obstacle
-const boxMaterial = new THREE.MeshStandardMaterial({ color: 0x35c2de });
-const obstacle = new THREE.Mesh(boxGeometry, boxMaterial);
-obstacle.position.z = 15;
-obstacle.castShadow = true;
-scene.add( obstacle );
+const obstacles = []; // array to store obstacles
+const obstaclePos = [15, 5, -7]; //z positions for three obstacles
 
-/* Cones */
-const coneGeometry = new THREE.ConeGeometry(2, 5);
-const coneMaterial = new THREE.MeshStandardMaterial({ color: 0x853eb8 });
-const cone = new THREE.Mesh(coneGeometry, coneMaterial);
-cone.position.z = 5;
-cone.castShadow = true;
-scene.add( cone );
+for( let i = 0; i < obstaclePos.length; i++ ){
+    const boxGeometry = new THREE.BoxGeometry( 8, 3, 0.5 ); // width, height, depth of obstacle
+    const boxMaterial = new THREE.MeshStandardMaterial({ color: 0x35c2de });
+    const obstacle = new THREE.Mesh(boxGeometry, boxMaterial);
+
+    obstacle.position.z = obstaclePos[i];
+
+    obstacle.castShadow = true;
+
+    obstacles.push( obstacle );
+    scene.add( obstacle );
+}
 
 /* Render the scene */
 function animate( time ) {
