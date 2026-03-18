@@ -1,5 +1,3 @@
-console.log("It's working!");
-
 import * as THREE from 'three';
 
 /* Create scene */
@@ -14,9 +12,15 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setAnimationLoop( animate );
 document.body.appendChild( renderer.domElement ); // creates a canvas
 
+/* Create light */
+const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 ); // overall soft warm light
+scene.add( light );
+
+const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 ); // dir light to give more effects to objects, like shadows/shine
+scene.add( directionalLight );
 /* Create a sphere */
-const sphereGeometry = new THREE.SphereGeometry(2, 32, 32);
-const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff00ff , metalness: 0.5, roughness: 0.0 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add( sphere );
 
