@@ -34,3 +34,13 @@ div#webgl, div#webgpu {
 .btn:hover {
     box-shadow: 0 4px 10px #00000026;
 }
+
+.menubtn {
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    z-index: 100;
+    display:block;
+    margin: 10px;
+    cursor: pointer;
+}
