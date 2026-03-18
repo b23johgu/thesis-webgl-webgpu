@@ -1,0 +1,36 @@
+body {
+margin: 0;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+}
+
+div#webgl, div#webgpu {
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 300px;
+}
+
+.btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    color: black;
+}
+
+.btn:hover {
+    box-shadow: 0 4px 10px #00000026;
+}
