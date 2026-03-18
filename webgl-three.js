@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { CameraHelper } from 'three';
 
 /* Create scene */
 const scene = new THREE.Scene();
@@ -21,6 +22,19 @@ scene.add( light );
 
 const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 ); // dir light to give more effects to objects, like shadows/shine
 directionalLight.castShadow = true;
+
+// Positions for lightning to make shadows appear
+directionalLight.shadow.camera.left = -5;
+directionalLight.shadow.camera.right = 5;
+directionalLight.shadow.camera.top = 20;
+directionalLight.shadow.camera.bottom = -20;
+
+directionalLight.shadow.camera.near = -10;
+directionalLight.shadow.camera.far = 1;
+
+const helper = new CameraHelper(directionalLight.shadow.camera);
+scene.add(helper);
+
 scene.add( directionalLight );
 
 /* Create floor */
