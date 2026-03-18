@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { CameraHelper } from 'three';
 
 /* Create scene */
 const scene = new THREE.Scene();
@@ -24,16 +23,15 @@ const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 ); // dir light
 directionalLight.castShadow = true;
 
 // Positions for lightning to make shadows appear
-directionalLight.shadow.camera.left = -5;
-directionalLight.shadow.camera.right = 5;
+directionalLight.shadow.camera.left = -20;
+directionalLight.shadow.camera.right = 20;
 directionalLight.shadow.camera.top = 20;
 directionalLight.shadow.camera.bottom = -20;
 
-directionalLight.shadow.camera.near = -10;
-directionalLight.shadow.camera.far = 1;
+directionalLight.shadow.camera.near = 1;
+directionalLight.shadow.camera.far = 50;
 
-const helper = new CameraHelper(directionalLight.shadow.camera);
-scene.add(helper);
+directionalLight.position.set(10, 20, 15);
 
 scene.add( directionalLight );
 
@@ -53,6 +51,22 @@ sphere.position.y = 1; //makes sphere appear to be on top of floor
 sphere.position.z = 18; //sphere begins at the nearest part of floor, floor is 40 (20 on each side of middle)
 sphere.castShadow = true;
 scene.add( sphere );
+
+/* Create obstacles */
+const boxGeometry = new THREE.BoxGeometry( 5, 3, 1 ); // width, height, depth of obstacle
+const boxMaterial = new THREE.MeshStandardMaterial({ color: 0x35c2de });
+const obstacle = new THREE.Mesh(boxGeometry, boxMaterial);
+obstacle.position.z = 15;
+obstacle.castShadow = true;
+scene.add( obstacle );
+
+/* Cones */
+const coneGeometry = new THREE.ConeGeometry(2, 5);
+const coneMaterial = new THREE.MeshStandardMaterial({ color: 0x853eb8 });
+const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+cone.position.z = 5;
+cone.castShadow = true;
+scene.add( cone );
 
 /* Render the scene */
 function animate( time ) {
