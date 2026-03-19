@@ -1,11 +1,12 @@
 import * as THREE from 'three';
+import { GameSimulation } from './gameLogic';
 
 /* Create scene */
 const scene = new THREE.Scene();
 
 /* Create camera */
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.set(0, 5, 25); // camera position x,y,z coordinates
+camera.position.set(0, 15, 25); // camera position x,y,z coordinates
 camera.lookAt(0, 1, 0); // camera looks at coordinates 0,1,0 (the sphere)
 
 /* WebGL renderer */
@@ -71,5 +72,12 @@ for( let i = 0; i < obstaclePos.length; i++ ){
 
 /* Render the scene */
 function animate( time ) {
+    const spherePosition = GameSimulation( sphere, time );
+
+    // update sphere position
+    if ( spherePosition ) {
+        sphere.position.z = spherePosition.z;
+    }
+
     renderer.render( scene, camera );
 }
