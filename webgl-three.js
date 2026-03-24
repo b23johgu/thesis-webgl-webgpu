@@ -6,8 +6,6 @@ const scene = new THREE.Scene();
 
 /* Create camera */
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.set(0, 15, 25); // camera position x,y,z coordinates
-camera.lookAt(0, 1, 0); // camera looks at coordinates 0,1,0 (the sphere)
 
 /* WebGL renderer */
 const renderer = new THREE.WebGLRenderer();
@@ -32,7 +30,7 @@ directionalLight.shadow.camera.bottom = -20;
 directionalLight.shadow.camera.near = 1;
 directionalLight.shadow.camera.far = 50;
 
-directionalLight.position.set(10, 20, 15);
+directionalLight.position.set( 10, 20, 15 );
 
 scene.add( directionalLight );
 
@@ -77,6 +75,11 @@ function animate( time ) {
     // update sphere position
     if ( spherePosition ) {
         sphere.position.z = spherePosition.z;
+
+        // Camera follows sphere
+        camera.position.y = 5; // height of camera
+        camera.position.z = sphere.position.z + 10; // the distance behind sphere
+        camera.lookAt( sphere.position ); // follow the sphere!
     }
 
     renderer.render( scene, camera );
