@@ -58,7 +58,7 @@ const obstaclePos = [15, 5, -7]; //z positions for three obstacles
 for( let i = 0; i < obstaclePos.length; i++ ){
     const boxGeometry = new THREE.BoxGeometry( 8, 3, 0.5 ); // width, height, depth of obstacle
     const boxMaterial = new THREE.MeshStandardMaterial({ color: 0x35c2de });
-    const obstacle = new THREE.Mesh(boxGeometry, boxMaterial);
+    const obstacle = new THREE.Mesh( boxGeometry, boxMaterial );
 
     obstacle.position.z = obstaclePos[i];
 
@@ -75,6 +75,7 @@ function animate( time ) {
     // update sphere position
     if ( spherePosition ) {
         sphere.position.z = spherePosition.z;
+        sphere.position.y = spherePosition.y;
 
         // Camera follows sphere
         camera.position.y = 5; // height of camera
@@ -84,3 +85,4 @@ function animate( time ) {
 
     renderer.render( scene, camera );
 }
+
