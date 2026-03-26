@@ -8,7 +8,7 @@ var createScene = function(){
     var scene = new BABYLON.Scene(engine);
 
     /* Create camera */
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -30), scene);
+    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 25, -30), scene); // 0, 5, -30 (reminder)
     camera.setTarget(BABYLON.Vector3.Zero());
 
     /* Create light */
@@ -17,7 +17,7 @@ var createScene = function(){
     light.intensity = 0.2;
 
     var dirlight = new BABYLON.DirectionalLight('dirLight', new BABYLON.Vector3(-5, -10, 5), scene);
-    light.position = new BABYLON.Vector3(20, 40, 20);
+    dirlight.position = new BABYLON.Vector3(20, 40, 20);
 
     /* Create floor */
     var floor = BABYLON.MeshBuilder.CreateGround("ground1", { width: 10, height: 40, subdivisions: 2, updatable: false }, scene);
@@ -35,19 +35,46 @@ var createScene = function(){
     sphere.position.z = -19; // sphere start position
 
     /* Obstacles */
-    const obstacle = BABYLON.MeshBuilder.CreateBox("box", {height: 2, width: 8, depth: 0.5});
-    const obstacleMat = new BABYLON.StandardMaterial("obstacleMat");
-    obstacleMat.diffuseColor = new BABYLON.Color3.FromHexString("#35c2de");
-    obstacle.material = obstacleMat;
+    const obstacles = []; // array to store obstacles
+    const obstacleZPos = [-15, 13]; //z positions for three obstacles
 
-    obstacle.position.y = 1;
-    obstacle.position.z = -15;
+    for( let i = 0; i < obstacleZPos.length; i++ ){
+        const obstacle = BABYLON.MeshBuilder.CreateBox("box", {height: 2, width: 8, depth: 0.5});
+        const obstacleMat = new BABYLON.StandardMaterial("obstacleMat");
+        obstacleMat.diffuseColor = new BABYLON.Color3.FromHexString("#35c2de");
+        obstacle.material = obstacleMat;
+    
+        obstacle.position.z = obstacleZPos[i];
+    
+        obstacles.push( obstacle );
+    }
+
+    // Cones
+    const cones = [];
+    const coneZPos = [-6, -6, 4];
+    const coneXPos = [0, -3, 3];
+
+    for( let i = 0; i < coneZPos.length; i++ ){
+        const cone = BABYLON.MeshBuilder.CreateCylinder("cone", {height: 3, diameterTop: 0, diameterBottom: 2.5});
+        const coneMat = new BABYLON.StandardMaterial("coneMat");
+        coneMat.diffuseColor = new BABYLON.Color3.FromHexString("#853eb8");
+        cone.material = coneMat;
+    
+        cone.position.x = coneXPos[i];
+        cone.position.y = 1;
+        cone.position.z = coneZPos[i];
+    
+        cones.push( cone );
+    }
 
     /* Shadows */
-    var shadowGenerator = new BABYLON.ShadowGenerator(1024, dirlight);
-    shadowGenerator.getShadowMap().renderList.push(sphere,obstacle); // sphere and obstacle makes shadow
-    floor.receiveShadows = true; // floor recieves shadow
+var shadowGenerator = new BABYLON.ShadowGenerator(1024, dirlight);
 
+shadowGenerator.addShadowCaster(sphere);
+obstacles.forEach(obs => shadowGenerator.addShadowCaster(obs));
+cones.forEach(obs => shadowGenerator.addShadowCaster(obs));
+
+floor.receiveShadows = true;
 
     return scene;
 }

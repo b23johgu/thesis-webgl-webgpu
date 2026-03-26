@@ -52,7 +52,7 @@ scene.add( sphere );
 
 /* Create obstacles */
 const obstacles = []; // array to store obstacles
-const obstaclePos = [15, 5, -7]; //z positions for three obstacles
+const obstaclePos = [15, -13]; //z positions for three obstacles
 
 for( let i = 0; i < obstaclePos.length; i++ ){
     const boxGeometry = new THREE.BoxGeometry( 8, 3, 0.5 ); // width, height, depth of obstacle
@@ -67,6 +67,27 @@ for( let i = 0; i < obstaclePos.length; i++ ){
     obstacles.push( obstacle );
     scene.add( obstacle );
 }
+
+/* Cones */
+    // Cones
+    const cones = [];
+    const coneZPos = [6, 6, -4];
+    const coneXPos = [0, -3, 3];
+
+    for( let i = 0; i < coneZPos.length; i++ ){
+        const coneGeometry = new THREE.ConeGeometry( 2, 5 );
+        const coneMaterial = new THREE.MeshStandardMaterial({ color: 0x853eb8 });
+        const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+        cone.position.z = 5;
+        cone.castShadow = true;
+        scene.add( cone );
+    
+        cone.position.x = coneXPos[i];
+        cone.position.y = 1;
+        cone.position.z = coneZPos[i];
+    
+        cones.push( cone );
+    }
 
 /* Render the scene */
 function animate( time ) {
