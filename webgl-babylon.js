@@ -8,7 +8,7 @@ var createScene = function(){
     var scene = new BABYLON.Scene(engine);
 
     /* Create camera */
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -30), scene); // 0, 5, -30 (reminder)
+    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 25, -30), scene); // 0, 5, -30 (reminder)
     camera.setTarget(BABYLON.Vector3.Zero());
 
     /* Create light */
@@ -32,7 +32,7 @@ var createScene = function(){
     sphere.material = sphereMat;
 
     sphere.position.y = 1; //makes sphere appear to be on top of floor
-    sphere.position.z = -19; // sphere start position
+    sphere.position.z = -18; // sphere start position
 
     /* Obstacles */
     const obstacles = []; // array to store obstacles
@@ -75,6 +75,30 @@ obstacles.forEach(obs => shadowGenerator.addShadowCaster(obs));
 cones.forEach(obs => shadowGenerator.addShadowCaster(obs));
 
 floor.receiveShadows = true;
+
+
+// ANI
+    var frameRate = 60;
+
+    var zSlide = new BABYLON.Animation("zSlide", "position.z", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+    var keyFrames = []; 
+
+    keyFrames.push({
+        frame: 0,
+        value: -18 // starts at sphere start position
+    });
+
+    keyFrames.push({
+        frame: 10 * frameRate, // 10 seconds
+        value: 18 // ends at end of floor
+    });
+
+    zSlide.setKeys(keyFrames);
+
+    scene.beginDirectAnimation(sphere, [zSlide], 0, 10 * frameRate);
+
+
 
     return scene;
 }
