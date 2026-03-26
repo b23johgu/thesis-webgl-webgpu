@@ -68,16 +68,16 @@ var createScene = function(){
     }
 
     /* Shadows */
-var shadowGenerator = new BABYLON.ShadowGenerator(1024, dirlight);
+    var shadowGenerator = new BABYLON.ShadowGenerator(1024, dirlight);
 
-shadowGenerator.addShadowCaster(sphere);
-obstacles.forEach(obs => shadowGenerator.addShadowCaster(obs));
-cones.forEach(obs => shadowGenerator.addShadowCaster(obs));
+    shadowGenerator.addShadowCaster(sphere);
+    obstacles.forEach(obs => shadowGenerator.addShadowCaster(obs));
+    cones.forEach(obs => shadowGenerator.addShadowCaster(obs));
 
-floor.receiveShadows = true;
+    floor.receiveShadows = true;
 
 
-// ANI
+    // Game Simulation
     var frameRate = 60;
 
     var zSlide = new BABYLON.Animation("zSlide", "position.z", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
