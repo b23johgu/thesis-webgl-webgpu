@@ -16,7 +16,7 @@ var createScene = function(){
     light.diffuse = new BABYLON.Color3.FromHexString("#ffffff");
     light.intensity = 0.2;
 
-    var dirlight = new BABYLON.DirectionalLight('dirLight', new BABYLON.Vector3(0, -10, 5), scene);
+    var dirlight = new BABYLON.DirectionalLight('dirLight', new BABYLON.Vector3(-5, -10, 5), scene);
     light.position = new BABYLON.Vector3(20, 40, 20);
 
     /* Create floor */
@@ -34,10 +34,20 @@ var createScene = function(){
     sphere.position.y = 1; //makes sphere appear to be on top of floor
     sphere.position.z = -19; // sphere start position
 
+    /* Obstacles */
+    const obstacle = BABYLON.MeshBuilder.CreateBox("box", {height: 2, width: 8, depth: 0.5});
+    const obstacleMat = new BABYLON.StandardMaterial("obstacleMat");
+    obstacleMat.diffuseColor = new BABYLON.Color3.FromHexString("#35c2de");
+    obstacle.material = obstacleMat;
+
+    obstacle.position.y = 1;
+    obstacle.position.z = -15;
+
     /* Shadows */
     var shadowGenerator = new BABYLON.ShadowGenerator(1024, dirlight);
+    shadowGenerator.getShadowMap().renderList.push(sphere,obstacle); // sphere and obstacle makes shadow
     floor.receiveShadows = true; // floor recieves shadow
-    shadowGenerator.getShadowMap().renderList.push(sphere); // sphere makes shadow
+
 
     return scene;
 }
