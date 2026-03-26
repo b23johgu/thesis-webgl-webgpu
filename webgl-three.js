@@ -19,6 +19,7 @@ const light = new THREE.HemisphereLight( 0xffffff, 0x080820, 0.7 ); // overall s
 scene.add( light );
 
 const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 ); // dir light to give more effects to objects, like shadows/shine
+directionalLight.position.set( 10, 20, 15 );
 directionalLight.castShadow = true;
 
 // Positions for lightning to make shadows appear
@@ -29,8 +30,6 @@ directionalLight.shadow.camera.bottom = -20;
 
 directionalLight.shadow.camera.near = 1;
 directionalLight.shadow.camera.far = 50;
-
-directionalLight.position.set( 10, 20, 15 );
 
 scene.add( directionalLight );
 
@@ -63,6 +62,7 @@ for( let i = 0; i < obstaclePos.length; i++ ){
     obstacle.position.z = obstaclePos[i];
 
     obstacle.castShadow = true;
+    obstacle.receiveShadow = true;
 
     obstacles.push( obstacle );
     scene.add( obstacle );
