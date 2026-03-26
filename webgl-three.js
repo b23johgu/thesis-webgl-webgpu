@@ -68,7 +68,6 @@ for( let i = 0; i < obstaclePos.length; i++ ){
     scene.add( obstacle );
 }
 
-/* Cones */
     // Cones
     const cones = [];
     const coneZPos = [6, 6, -4];
@@ -78,15 +77,15 @@ for( let i = 0; i < obstaclePos.length; i++ ){
         const coneGeometry = new THREE.ConeGeometry( 2, 5 );
         const coneMaterial = new THREE.MeshStandardMaterial({ color: 0x853eb8 });
         const cone = new THREE.Mesh(coneGeometry, coneMaterial);
-        cone.position.z = 5;
         cone.castShadow = true;
-        scene.add( cone );
-    
+
         cone.position.x = coneXPos[i];
         cone.position.y = 1;
         cone.position.z = coneZPos[i];
     
         cones.push( cone );
+
+        scene.add( cone );
     }
 
 /* Render the scene */
