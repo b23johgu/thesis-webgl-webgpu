@@ -8,7 +8,7 @@ var createScene = function(){
     var scene = new BABYLON.Scene(engine);
 
     /* Create camera */
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 25, -30), scene); // 0, 5, -30 (reminder)
+    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -30), scene); // 0, 5, -30 (reminder)
     camera.setTarget(BABYLON.Vector3.Zero());
 
     /* Create light */

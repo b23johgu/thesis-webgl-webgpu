@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import { GameSimulation } from './gameLogic';
 
 /* Create scene */
 const scene = new THREE.Scene();
 
 /* Create camera */
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+camera.position.set(0, 5, 30); 
 
 /* WebGL renderer */
 const renderer = new THREE.WebGLRenderer();
@@ -89,20 +89,7 @@ for( let i = 0; i < obstaclePos.length; i++ ){
     }
 
 /* Render the scene */
-function animate( time ) {
-    const spherePosition = GameSimulation( sphere, time );
-
-    // update sphere position
-    if ( spherePosition ) {
-        sphere.position.z = spherePosition.z;
-        sphere.position.y = spherePosition.y;
-
-        // Camera follows sphere
-        camera.position.y = 5; // height of camera
-        camera.position.z = sphere.position.z + 10; // the distance behind sphere
-        camera.lookAt( sphere.position ); // follow the sphere!
-    }
-
+function animate() {
     renderer.render( scene, camera );
 }
 
