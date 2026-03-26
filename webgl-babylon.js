@@ -14,7 +14,6 @@ var createScene = function(){
     /* Create light */
 	var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.diffuse = new BABYLON.Color3.FromHexString("#ffffff");
-    light.groundColor = new BABYLON.Color3.FromHexString("#080820");
     light.intensity = 0.2;
 
     var dirlight = new BABYLON.DirectionalLight('dirLight', new BABYLON.Vector3(0, -10, 5), scene);

@@ -15,7 +15,7 @@ renderer.setAnimationLoop( animate );
 document.body.appendChild( renderer.domElement ); // creates a canvas
 
 /* Create light */
-const light = new THREE.HemisphereLight( 0xffffff, 0x080820, 0.7 ); // overall soft white light shining from top
+const light = new THREE.HemisphereLight( 0xffffff, 0.7 ); // overall soft white light shining from top
 scene.add( light );
 
 const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 ); // dir light to give more effects to objects, like shadows/shine
