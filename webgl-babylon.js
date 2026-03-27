@@ -8,7 +8,7 @@ var createScene = function(){
     var scene = new BABYLON.Scene(engine);
 
     /* Create camera */
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 6, -30), scene); // 0, 5, -30 (reminder)
+    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 16, -30), scene); // 0, 5, -30 (reminder)
     camera.setTarget(BABYLON.Vector3.Zero());
 
     /* Create light */
@@ -76,19 +76,16 @@ var createScene = function(){
 
     floor.receiveShadows = true;
 
-
     /* Game Simulation */
     var frameRate = 60;
 
     var moveForward = new BABYLON.Animation("moveForward", "position.z", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-
     var keyFrames = []; 
 
     keyFrames.push({
         frame: 0,
         value: -18 // starts at sphere start position
     });
-
     keyFrames.push({
         frame: 10 * frameRate, // 10 seconds
         value: 18 // ends at end of floor
@@ -96,6 +93,7 @@ var createScene = function(){
 
     moveForward.setKeys(keyFrames);
 
+    // Jump
     function jump() {
         var jump = new BABYLON.Animation("jump", "position.y", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
         var keys = [
@@ -107,10 +105,28 @@ var createScene = function(){
         scene.beginDirectAnimation(sphere, [jump], 1, frameRate);
     }
 
-    scene.onBeforeRenderObservable.add(() => { // Checking every frame if sphere should jump
+    // Turn left
+    function avoidCones() {
+        var avoidCones = new BABYLON.Animation("avoidCones", "position.x", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        var keys = [
+            { frame: 0, value: 0 }, 
+            { frame: 30, value: 3 }, // Turn 3 units to the left
+            { frame: 60, value: 0 }
+        ];
+        avoidCones.setKeys(keys);
+        scene.beginDirectAnimation(sphere, [avoidCones], 1, frameRate);
+    }
+
+    // Obstacle z-positions: -15, 13
+    // Cone z-positions: -6, 4
+    scene.onBeforeRenderObservable.add(() => { // Checking every frame what should happen
         // First jump
         if (sphere.position.z > -16 && sphere.position.z < -15) {
             jump();
+        }
+        // Avoid cones
+        if (sphere.position.z > -8 && sphere.position.z < -7) {
+            avoidCones();
         }
         // Second jump
         if (sphere.position.z > 12 && sphere.position.z < 13) {
