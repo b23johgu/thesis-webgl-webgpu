@@ -8,7 +8,7 @@ var createScene = function(){
     var scene = new BABYLON.Scene(engine);
 
     /* Create camera */
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 25, -30), scene); // 0, 5, -30 (reminder)
+    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 6, -30), scene); // 0, 5, -30 (reminder)
     camera.setTarget(BABYLON.Vector3.Zero());
 
     /* Create light */
@@ -77,10 +77,10 @@ var createScene = function(){
     floor.receiveShadows = true;
 
 
-    // Game Simulation
+    /* Game Simulation */
     var frameRate = 60;
 
-    var zSlide = new BABYLON.Animation("zSlide", "position.z", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var moveForward = new BABYLON.Animation("moveForward", "position.z", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 
     var keyFrames = []; 
 
@@ -94,11 +94,11 @@ var createScene = function(){
         value: 18 // ends at end of floor
     });
 
-    zSlide.setKeys(keyFrames);
-
-    scene.beginDirectAnimation(sphere, [zSlide], 0, 10 * frameRate);
+    moveForward.setKeys(keyFrames);
 
 
+
+    scene.beginDirectAnimation(sphere, [moveForward], 1, 10 * frameRate, true); // true== loop animation for testing purpose, false by default(can be completely removed later)
 
     return scene;
 }
