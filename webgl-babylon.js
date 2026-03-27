@@ -8,7 +8,7 @@ var createScene = function(){
     var scene = new BABYLON.Scene(engine);
 
     /* Create camera */
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 16, -30), scene); // 0, 5, -30 (reminder)
+    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -30), scene); // 0, 5, -30 (reminder)
     camera.setTarget(BABYLON.Vector3.Zero());
 
     /* Create light */
@@ -132,6 +132,11 @@ var createScene = function(){
         if (sphere.position.z > 12 && sphere.position.z < 13) {
             jump();
         }
+
+        // Checks every frame where sphere is and positions camera to follow it
+        camera.position.z = sphere.position.z - 10;
+        camera.position.y = sphere.position.y + 5;
+        camera.setTarget(sphere.position);
     });
 
     scene.beginDirectAnimation(sphere, [moveForward], 1, 10 * frameRate, true); // true== loop animation for testing purpose, false by default(can be completely removed later)
