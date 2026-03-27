@@ -96,7 +96,27 @@ var createScene = function(){
 
     moveForward.setKeys(keyFrames);
 
+    function jump() {
+        var jump = new BABYLON.Animation("jump", "position.y", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        var keys = [
+            { frame: 0, value: 1 }, // Keep sphere at 1 y-axis
+            { frame: 10, value: 4 }, // jump to 4 on y-axis
+            { frame: 20, value: 1 } // Get sphere back to floor, 1 on y-axis
+        ];
+        jump.setKeys(keys);
+        scene.beginDirectAnimation(sphere, [jump], 1, frameRate);
+    }
 
+    scene.onBeforeRenderObservable.add(() => { // Checking every frame if sphere should jump
+        // First jump
+        if (sphere.position.z > -16 && sphere.position.z < -15) {
+            jump();
+        }
+        // Second jump
+        if (sphere.position.z > 12 && sphere.position.z < 13) {
+            jump();
+        }
+    });
 
     scene.beginDirectAnimation(sphere, [moveForward], 1, 10 * frameRate, true); // true== loop animation for testing purpose, false by default(can be completely removed later)
 
