@@ -45,6 +45,8 @@ var createScene = function(){
     
         obstacle.position.y = 1;
         obstacle.position.z = obstacleZPos[i];
+
+        obstacle.receiveShadows = true;
     
         obstacles.push( obstacle );
     }
@@ -63,6 +65,8 @@ var createScene = function(){
         cone.position.x = coneXPos[i];
         cone.position.y = 1;
         cone.position.z = coneZPos[i];
+
+        cone.receiveShadows = true;
     
         cones.push( cone );
     }
