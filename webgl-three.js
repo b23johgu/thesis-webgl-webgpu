@@ -5,7 +5,7 @@ const scene = new THREE.Scene();
 
 /* Create camera */
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.set(0, 5, 30); 
+camera.position.set(0, 5, 30); // 0,5,30 (reminder if changing positions)
 
 /* WebGL renderer */
 const renderer = new THREE.WebGLRenderer();
@@ -46,7 +46,7 @@ const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff00ff , metalness: 0.5, roughness: 0.0 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 sphere.position.y = 1; //makes sphere appear to be on top of floor
-sphere.position.z = 19; //sphere begins at the nearest part of floor, floor is 40 (20 on each side of middle)
+sphere.position.z = 18; //sphere begins at the nearest part of floor, floor is 40 (20 on each side of middle)
 sphere.castShadow = true;
 scene.add( sphere );
 
@@ -68,28 +68,26 @@ for( let i = 0; i < obstaclePos.length; i++ ){
     scene.add( obstacle );
 }
 
-    // Cones
-    const cones = [];
-    const coneZPos = [6, 6, -4];
-    const coneXPos = [0, -3, 3];
+// Cones
+const cones = [];
+const coneZPos = [6, 6, -4];
+const coneXPos = [0, -3, 3];
 
-    for( let i = 0; i < coneZPos.length; i++ ){
-        const coneGeometry = new THREE.ConeGeometry( 2, 5 );
-        const coneMaterial = new THREE.MeshStandardMaterial({ color: 0x853eb8 });
-        const cone = new THREE.Mesh(coneGeometry, coneMaterial);
-        cone.castShadow = true;
+for( let i = 0; i < coneZPos.length; i++ ){
+    const coneGeometry = new THREE.ConeGeometry( 2, 5 );
+    const coneMaterial = new THREE.MeshStandardMaterial({ color: 0x853eb8 });
+    const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+    cone.castShadow = true;
 
-        cone.position.x = coneXPos[i];
-        cone.position.y = 1;
-        cone.position.z = coneZPos[i];
-    
-        cones.push( cone );
+    cone.position.x = coneXPos[i];
+    cone.position.y = 1;
+    cone.position.z = coneZPos[i];
 
-        scene.add( cone );
-    }
+    cones.push( cone );
 
 /* Render the scene */
 function animate() {
     renderer.render( scene, camera );
+    scene.add( cone );
 }
 
