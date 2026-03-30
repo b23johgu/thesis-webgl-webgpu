@@ -77,79 +77,62 @@ var createScene = function(){
     floor.receiveShadows = true;
 
     /* Game Simulation */
-    var frameRate = 60;
-
-    var moveForward = new BABYLON.Animation("moveForward", "position.z", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-    var keyFrames = []; 
-
-    keyFrames.push({
-        frame: 0,
-        value: -18 // starts at sphere start position
-    });
-    keyFrames.push({
-        frame: 10 * frameRate, // 10 seconds
-        value: 18 // ends at end of floor
-    });
-
-    moveForward.setKeys(keyFrames);
-
-    // Jump
-    function jump() {
-        var jump = new BABYLON.Animation("jump", "position.y", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-        var keys = [
-            { frame: 0, value: 1 }, // Keep sphere at 1 y-axis
-            { frame: 10, value: 4 }, // jump to 4 on y-axis
-            { frame: 20, value: 1 } // Get sphere back to floor, 1 on y-axis
-        ];
-        jump.setKeys(keys);
-        scene.beginDirectAnimation(sphere, [jump], 1, frameRate);
-    }
-
-    // Turn left
-    function avoidCones() {
-        var avoidCones = new BABYLON.Animation("avoidCones", "position.x", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-        var keys = [
-            { frame: 0, value: 0 }, 
-            { frame: 30, value: 3 }, // Turn 3 units to the left
-            { frame: 60, value: 0 }
-        ];
-        avoidCones.setKeys(keys);
-        scene.beginDirectAnimation(sphere, [avoidCones], 1, frameRate);
-    }
-
-    // Obstacle z-positions: -15, 13
-    // Cone z-positions: -6, 4
-    scene.onBeforeRenderObservable.add(() => { // Checking every frame what should happen
+    var points = BABYLON.Curve3.CreateCatmullRomSpline(
+        [
+        new BABYLON.Vector3(0, 1, -18), // start
         // First jump
-        if (sphere.position.z > -16 && sphere.position.z < -15) {
-            jump();
-        }
+        new BABYLON.Vector3(0, 1, -17), // begin jump
+        new BABYLON.Vector3(0, 4, -15), // highest part of jump
+        new BABYLON.Vector3(0, 1, -12), // land after jumping
         // Avoid cones
-        if (sphere.position.z > -8 && sphere.position.z < -7) {
-            avoidCones();
-        }
+        new BABYLON.Vector3(0, 1, -10),
+        new BABYLON.Vector3(3, 1, -8), // turn right 2 units before cone
+        new BABYLON.Vector3(3, 1, 0), // stay to the right
+        new BABYLON.Vector3(0, 1, 2), // turn left 2 units before cone
         // Second jump
-        if (sphere.position.z > 12 && sphere.position.z < 13) {
-            jump();
-        }
+        new BABYLON.Vector3(0, 1, 11), // begin jump
+        new BABYLON.Vector3(0, 4, 13), // highest part of jump
+        new BABYLON.Vector3(0, 1, 16), // land after jumping
+
+        new BABYLON.Vector3(0, 1, 18) // end
+        ],
+        60);
+
+
+    // Visual red help line to see path smooth movement throughout animation
+    var path = BABYLON.MeshBuilder.CreateLines("path", { points: points.getPoints() }, scene);
+    const pathMat = new BABYLON.StandardMaterial("pathMat", scene);
+    pathMat.emissiveColor = new BABYLON.Color3.FromHexString("#ff0000");
+    path.material = pathMat;
+
+
+    // Converts "points" to Path3D which generates evenly spaced points along the path for smoother movement
+    var path3D = new BABYLON.Path3D(points.getPoints()); 
+    var pathPoints = path3D.getPoints();
+
+    const duration = 10; // 10 seconds
+    let startTime = performance.now();
+
+    engine.runRenderLoop(function(){
+        const elapsed = (performance.now() - startTime) / 1000; // gives elapsed milliseconds since animation started, divide by 1000 to convert to seconds
+        const t = Math.min(elapsed / duration, 1);
+
+        const index = Math.floor(t * (pathPoints.length - 1));
+        sphere.position.copyFrom(pathPoints[index]);
 
         // Checks every frame where sphere is and positions camera to follow it
         camera.position.z = sphere.position.z - 10;
         camera.position.y = sphere.position.y + 5;
         camera.setTarget(sphere.position);
-    });
 
-    scene.beginDirectAnimation(sphere, [moveForward], 1, 10 * frameRate, true); // true== loop animation for testing purpose, false by default(can be completely removed later)
+        scene.render(); // render scene to animate
+    });
 
     return scene;
 }
 
 /* Render the scene */
-var scene = createScene();
-
-engine.runRenderLoop(function(){
-    scene.render();
-});
+createScene();
 
 // canvas/window resize event handler
 window.addEventListener('resize', function(){
