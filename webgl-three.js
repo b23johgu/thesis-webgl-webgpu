@@ -85,9 +85,41 @@ for( let i = 0; i < coneZPos.length; i++ ){
 
     cones.push( cone );
 
-/* Render the scene */
-function animate() {
-    renderer.render( scene, camera );
     scene.add( cone );
 }
 
+/* Game Simulation */
+const points = [ // x y z
+    new THREE.Vector3(0, 1, 18), // start
+    new THREE.Vector3(0, 4, 15), // first jump
+    new THREE.Vector3(3, 1, 6), // avoid cones
+    new THREE.Vector3(0, 1, -4), // avoid second cone
+    new THREE.Vector3(0, 4, -13), // second jump
+    new THREE.Vector3(0, 1, -18) // end
+]
+
+const path = new THREE.CatmullRomCurve3(points);
+
+// Helper to modify path
+const pathGeometry = new THREE.BufferGeometry().setFromPoints(path.getPoints(50));
+const pathMaterial = new THREE.LineBasicMaterial({color: 0xff0000});
+const pathObject = new THREE.Line(pathGeometry, pathMaterial);
+scene.add(pathObject);
+
+
+/* Render the scene */
+function animate(time) {
+    requestAnimationFrame(animate);
+    const duration = 10 // 10 seconds
+    const t = (time * 0.001 % duration) / duration
+    
+    const position = path.getPointAt(t);
+    sphere.position.copy(position);
+
+        // Camera follows sphere
+        camera.position.z = sphere.position.z + 10;
+        camera.position.y = sphere.position.y + 5;
+        camera.lookAt(sphere.position);
+
+    renderer.render(scene, camera);
+}
