@@ -98,13 +98,13 @@ var createScene = function(){
         ],
         60);
 
-
-    // Visual red help line to see path smooth movement throughout animation
+/*
+    // Visual red help line to see path smooth movement throughout animation (REMOVE COMMMENT SIGNS TO REVEAL)
     var path = BABYLON.MeshBuilder.CreateLines("path", { points: points.getPoints() }, scene);
     const pathMat = new BABYLON.StandardMaterial("pathMat", scene);
     pathMat.emissiveColor = new BABYLON.Color3.FromHexString("#ff0000");
     path.material = pathMat;
-
+*/
 
     // Converts "points" to Path3D which generates evenly spaced points along the path for smoother movement
     var path3D = new BABYLON.Path3D(points.getPoints()); 

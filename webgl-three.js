@@ -111,12 +111,13 @@ const points = [ // x y z
 
 const path = new THREE.CatmullRomCurve3(points);
 
-// Helper to modify path
+/*
+// Visual red help line to see path smooth movement throughout animation (REMOVE COMMMENT SIGNS TO REVEAL)
 const pathGeometry = new THREE.BufferGeometry().setFromPoints(path.getPoints(50));
 const pathMaterial = new THREE.LineBasicMaterial({color: 0xff0000});
 const pathObject = new THREE.Line(pathGeometry, pathMaterial);
 scene.add(pathObject);
-
+*/
 
 /* Render the scene */
 function animate(time) {
