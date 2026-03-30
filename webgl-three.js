@@ -60,6 +60,7 @@ for( let i = 0; i < obstaclePos.length; i++ ){
     const obstacle = new THREE.Mesh( boxGeometry, boxMaterial );
 
     obstacle.position.z = obstaclePos[i];
+    obstacle.position.y = 1;
 
     obstacle.castShadow = true;
     obstacle.receiveShadow = true;
@@ -74,13 +75,13 @@ const coneZPos = [6, 6, -4];
 const coneXPos = [0, -3, 3];
 
 for( let i = 0; i < coneZPos.length; i++ ){
-    const coneGeometry = new THREE.ConeGeometry( 2, 5 );
+    const coneGeometry = new THREE.ConeGeometry( 2, 4 );
     const coneMaterial = new THREE.MeshStandardMaterial({ color: 0x853eb8 });
     const cone = new THREE.Mesh(coneGeometry, coneMaterial);
     cone.castShadow = true;
 
     cone.position.x = coneXPos[i];
-    cone.position.y = 1;
+    cone.position.y = 2;
     cone.position.z = coneZPos[i];
 
     cones.push( cone );
@@ -91,10 +92,20 @@ for( let i = 0; i < coneZPos.length; i++ ){
 /* Game Simulation */
 const points = [ // x y z
     new THREE.Vector3(0, 1, 18), // start
-    new THREE.Vector3(0, 4, 15), // first jump
-    new THREE.Vector3(3, 1, 6), // avoid cones
-    new THREE.Vector3(0, 1, -4), // avoid second cone
-    new THREE.Vector3(0, 4, -13), // second jump
+    // First jump
+    new THREE.Vector3(0, 1, 17), // begin jump
+    new THREE.Vector3(0, 4, 15), // highest part of jump
+    new THREE.Vector3(0, 1, 12), // land after jumping
+    // Avoid cones
+    new THREE.Vector3(0, 1, 10),
+    new THREE.Vector3(3, 1, 8), // turn right 2 units before cone
+    new THREE.Vector3(3, 1, 0), // stay to the right
+    new THREE.Vector3(0, 1, -2), // turn left 2 units before cone
+    // Second jump
+    new THREE.Vector3(0, 1, -11), // begin jump
+    new THREE.Vector3(0, 4, -13), // highest part of jump
+    new THREE.Vector3(0, 1, -16), // land after jumping
+
     new THREE.Vector3(0, 1, -18) // end
 ]
 
@@ -118,7 +129,8 @@ function animate(time) {
 
         // Camera follows sphere
         camera.position.z = sphere.position.z + 10;
-        camera.position.y = sphere.position.y + 5;
+        camera.position.y = sphere.position.y + 5; //5
+        //camera.position.x = sphere.position.x + 25; // helper to see curve
         camera.lookAt(sphere.position);
 
     renderer.render(scene, camera);
