@@ -9,8 +9,7 @@ var createScene = function(){
 
     /* Create camera */
     var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -30), scene); // 0, 5, -30 (reminder)
-    camera.setTarget(BABYLON.Vector3.Zero());
-
+    
     /* Create light */
 	var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.diffuse = new BABYLON.Color3.FromHexString("#ffffff");
@@ -36,7 +35,7 @@ var createScene = function(){
 
     /* Obstacles */
     const obstacles = []; // array to store obstacles
-    const obstacleZPos = [-15, 13]; //z positions for three obstacles
+    const obstacleZPos = [-15, 13]; //z positions for obstacles
 
     for( let i = 0; i < obstacleZPos.length; i++ ){
         const obstacle = BABYLON.MeshBuilder.CreateBox("box", {height: 2, width: 8, depth: 0.5});
@@ -44,6 +43,7 @@ var createScene = function(){
         obstacleMat.diffuseColor = new BABYLON.Color3.FromHexString("#35c2de");
         obstacle.material = obstacleMat;
     
+        obstacle.position.y = 1;
         obstacle.position.z = obstacleZPos[i];
     
         obstacles.push( obstacle );
