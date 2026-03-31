@@ -128,10 +128,10 @@ function animate(time) {
     const position = path.getPointAt(t);
     sphere.position.copy(position);
 
-        // Camera follows sphere
-        camera.position.z = sphere.position.z + 10;
-        camera.position.y = sphere.position.y + 5; //5
-        camera.lookAt(sphere.position);
+    // Camera follows sphere
+    camera.position.z = sphere.position.z + 10;
+    camera.position.y = sphere.position.y + 5; //5
+    camera.lookAt(sphere.position);
 
     renderer.render(scene, camera);
 }
