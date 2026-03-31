@@ -51,7 +51,7 @@ var createScene = function(){
         obstacles.push( obstacle );
     }
 
-    // Cones
+    /* Cones */
     const cones = [];
     const coneZPos = [-6, -6, 4];
     const coneXPos = [0, -3, 3];
@@ -129,7 +129,7 @@ var createScene = function(){
         camera.position.y = sphere.position.y + 5;
         camera.setTarget(sphere.position);
 
-        scene.render(); // render scene to animate
+        scene.render();
     });
 
     return scene;
@@ -138,7 +138,7 @@ var createScene = function(){
 /* Render the scene */
 createScene();
 
-// canvas/window resize event handler
+/* Canvas/window resize event handler */
 window.addEventListener('resize', function(){
     engine.resize();
 });
