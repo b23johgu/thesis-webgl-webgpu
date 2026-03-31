@@ -131,7 +131,6 @@ function animate(time) {
         // Camera follows sphere
         camera.position.z = sphere.position.z + 10;
         camera.position.y = sphere.position.y + 5; //5
-        //camera.position.x = sphere.position.x + 25; // helper to see curve
         camera.lookAt(sphere.position);
 
     renderer.render(scene, camera);
