@@ -81,7 +81,7 @@ for( let i = 0; i < coneZPos.length; i++ ){
     cone.castShadow = true;
 
     cone.position.x = coneXPos[i];
-    cone.position.y = 2;
+    cone.position.y = 1;
     cone.position.z = coneZPos[i];
 
     cones.push(cone);

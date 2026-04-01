@@ -1,7 +1,7 @@
 import * as BABYLON from 'babylonjs';
 
 var canvas = document.getElementById('renderCanvas');
-var engine = new BABYLON.Engine(canvas, true, {preserveDrawingBuffer: true, stencil: true});
+var engine = new BABYLON.Engine(canvas);
 
 var createScene = function(){
     /* Create scene */
@@ -57,7 +57,7 @@ var createScene = function(){
     const coneXPos = [0, -3, 3];
 
     for( let i = 0; i < coneZPos.length; i++ ){
-        const cone = BABYLON.MeshBuilder.CreateCylinder("cone", {height: 3, diameterTop: 0, diameterBottom: 2.5});
+        const cone = BABYLON.MeshBuilder.CreateCylinder("cone", {height: 4, diameterTop: 0, diameterBottom: 4});
         const coneMat = new BABYLON.StandardMaterial("coneMat");
         coneMat.diffuseColor = new BABYLON.Color3.FromHexString("#853eb8");
         cone.material = coneMat;
