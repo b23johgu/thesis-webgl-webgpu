@@ -1,10 +1,18 @@
 import * as BABYLON from 'babylonjs';
 
-var canvas = document.getElementById('renderCanvas');
-const engine = new BABYLON.WebGPUEngine(canvas);
-await engine.initAsync();
+async function createScene() {
+    var canvas = document.getElementById('renderCanvas');
+    const webgpuSupport = await BABYLON.WebGPUEngine.IsSupportedAsync;
 
-var createScene = function(){
+    if (!webgpuSupport) {
+        document.body.innerHTML = "<h1>WebGPU is not supported on this browser.</h1>";
+        return;
+    }
+
+    /* WebGPU renderer */
+    const engine = new BABYLON.WebGPUEngine(canvas);
+    await engine.initAsync();
+
     /* Create scene */
     var scene = new BABYLON.Scene(engine);
 
@@ -136,10 +144,8 @@ var createScene = function(){
     return scene;
 }
 
+/* Canvas/window resize event handler */
+window.addEventListener('resize', function(){engine.resize();});
+
 /* Render the scene */
 createScene();
-
-/* Canvas/window resize event handler */
-window.addEventListener('resize', function(){
-    engine.resize();
-});
