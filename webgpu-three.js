@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import WebGPU from 'three/addons/capabilities/WebGPU.js';
+import { WebGPURenderer } from 'three/webgpu';
 
 /* Create scene */
 const scene = new THREE.Scene();
@@ -7,12 +9,17 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 5, 30); // 0,5,30 (reminder if changing positions)
 
-/* WebGL renderer */
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true; // Enable shadows
-renderer.setAnimationLoop(animate);
-document.body.appendChild(renderer.domElement); // creates a canvas
+/* WebGPU renderer + check support */
+let renderer;
+if (WebGPU.isAvailable()) {
+    renderer = new WebGPURenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.setAnimationLoop(animate);
+    document.body.appendChild(renderer.domElement);
+} else {
+    document.body.appendChild(WebGPU.getErrorMessage());
+}
 
 /* Create light */
 const light = new THREE.HemisphereLight(0xffffff, 0.7); // overall soft white light shining from top
@@ -120,7 +127,6 @@ scene.add(pathObject);
 
 /* Render the scene */
 function animate(time) {
-    //requestAnimationFrame(animate);
     const duration = 10 // 10 seconds
     const t = (time * 0.001 % duration) / duration
     
