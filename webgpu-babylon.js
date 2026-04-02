@@ -17,7 +17,7 @@ async function createScene() {
     var scene = new BABYLON.Scene(engine);
 
     /* Create camera */
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -30), scene); // 0, 5, -30 (reminder)
+    var camera = new BABYLON.UniversalCamera('camera1', new BABYLON.Vector3(0, 5, -30), scene); // 0, 5, -30 (reminder)
     
     /* Create light */
     var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
