@@ -5,10 +5,6 @@ import { WebGPURenderer } from 'three/webgpu';
 /* Create scene */
 const scene = new THREE.Scene();
 
-/* Create camera */
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 5, 30); // 0,5,30 (reminder if changing positions)
-
 /* WebGPU renderer + check support */
 let renderer;
 if (WebGPU.isAvailable()) {
@@ -21,8 +17,11 @@ if (WebGPU.isAvailable()) {
     document.body.appendChild(WebGPU.getErrorMessage());
 }
 
+/* Create camera */
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
 /* Create light */
-const light = new THREE.HemisphereLight(0xffffff, 0.7); // overall soft white light shining from top
+const light = new THREE.HemisphereLight(0xffffff, 0x000000, 0.7); // overall soft white light shining from top
 scene.add(light);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // dir light to give more effects to objects, like shadows/shine
@@ -42,7 +41,7 @@ scene.add(directionalLight);
 
 /* Create floor */
 const floorGeometry = new THREE.PlaneGeometry(10, 40); // width , length
-const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
+const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc });
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.rotation.x = -Math.PI / 2; // rotates floor (default for planegeometry is acting like a wall)
 floor.receiveShadow = true;
@@ -76,7 +75,7 @@ for( let i = 0; i < obstaclePos.length; i++ ){
     scene.add( obstacle );
 }
 
-// Cones
+/* Cones */
 const cones = [];
 const coneZPos = [6, 6, -4];
 const coneXPos = [0, -3, 3];

@@ -3,10 +3,6 @@ import * as THREE from 'three';
 /* Create scene */
 const scene = new THREE.Scene();
 
-/* Create camera */
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 5, 30); // 0,5,30 (reminder if changing positions)
-
 /* WebGL renderer */
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -14,8 +10,12 @@ renderer.shadowMap.enabled = true; // Enable shadows
 renderer.setAnimationLoop(animate);
 document.body.appendChild(renderer.domElement); // creates a canvas
 
+/* Create camera */
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 5, 30); // 0,5,30 (reminder if changing positions)
+
 /* Create light */
-const light = new THREE.HemisphereLight(0xffffff, 0.7); // overall soft white light shining from top
+const light = new THREE.HemisphereLight(0xffffff, 0x000000, 0.7); // overall soft white light shining from top
 scene.add(light);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // dir light to give more effects to objects, like shadows/shine
@@ -35,7 +35,7 @@ scene.add(directionalLight);
 
 /* Create floor */
 const floorGeometry = new THREE.PlaneGeometry(10, 40); // width , length
-const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
+const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc });
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.rotation.x = -Math.PI / 2; // rotates floor (default for planegeometry is acting like a wall)
 floor.receiveShadow = true;
@@ -75,7 +75,7 @@ const coneZPos = [6, 6, -4];
 const coneXPos = [0, -3, 3];
 
 for( let i = 0; i < coneZPos.length; i++ ){
-    const coneGeometry = new THREE.ConeGeometry(2, 4);
+    const coneGeometry = new THREE.ConeGeometry(2, 4); 
     const coneMaterial = new THREE.MeshStandardMaterial({ color: 0x853eb8 });
     const cone = new THREE.Mesh(coneGeometry, coneMaterial);
     cone.castShadow = true;
@@ -120,7 +120,6 @@ scene.add(pathObject);
 
 /* Render the scene */
 function animate(time) {
-    //requestAnimationFrame(animate);
     const duration = 10 // 10 seconds
     const t = (time * 0.001 % duration) / duration
     
