@@ -121,7 +121,7 @@ scene.add(pathObject);
 /* Render the scene */
 function animate(time) {
     const duration = 10 // 10 seconds
-    const t = (time * 0.001 % duration) / duration
+    const t = Math.min((time * 0.001) / duration, 1);
     
     const position = path.getPointAt(t);
     sphere.position.copy(position);
