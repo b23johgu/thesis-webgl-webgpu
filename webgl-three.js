@@ -7,7 +7,6 @@ const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true; // Enable shadows
-renderer.setAnimationLoop(animate);
 document.body.appendChild(renderer.domElement); // creates a canvas
 
 /* Create camera */
@@ -121,7 +120,8 @@ scene.add(pathObject);
 /* Render the scene */
 function animate(time) {
     const duration = 10 // 10 seconds
-    const t = Math.min((time * 0.001) / duration, 1);
+    // const t = Math.min((time * 0.001) / duration, 1); PLAY ONCE
+    const t = ((time * 0.001) / duration) % 1; // LOOP FOREVER
     
     const position = path.getPointAt(t);
     sphere.position.copy(position);
@@ -132,4 +132,7 @@ function animate(time) {
     camera.lookAt(sphere.position);
 
     renderer.render(scene, camera);
+    requestAnimationFrame(animate);
 }
+
+requestAnimationFrame(animate);

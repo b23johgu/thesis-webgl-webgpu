@@ -11,7 +11,6 @@ if (WebGPU.isAvailable()) {
     renderer = new WebGPURenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
-    renderer.setAnimationLoop(animate);
     document.body.appendChild(renderer.domElement);
 } else {
     document.body.appendChild(WebGPU.getErrorMessage());
@@ -138,4 +137,6 @@ function animate(time) {
     camera.lookAt(sphere.position);
 
     renderer.render(scene, camera);
+    requestAnimationFrame(animate);
 }
+requestAnimationFrame(animate);
