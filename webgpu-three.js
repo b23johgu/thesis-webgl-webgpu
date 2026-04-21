@@ -10,14 +10,16 @@ let renderer;
 if (WebGPU.isAvailable()) {
     renderer = new WebGPURenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setAnimationLoop(animate);
     renderer.shadowMap.enabled = true;
     document.body.appendChild(renderer.domElement);
 } else {
     document.body.appendChild(WebGPU.getErrorMessage());
 }
-
+console.log("Renderer created:", renderer);
 /* Create camera */
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 5, 30); // 0,5,30 (reminder if changing positions)
 
 /* Create light */
 const light = new THREE.HemisphereLight(0xffffff, 0x000000, 0.7); // overall soft white light shining from top
@@ -32,7 +34,6 @@ directionalLight.shadow.camera.left = -20;
 directionalLight.shadow.camera.right = 20;
 directionalLight.shadow.camera.top = 20;
 directionalLight.shadow.camera.bottom = -20;
-
 directionalLight.shadow.camera.near = 1;
 directionalLight.shadow.camera.far = 50;
 
@@ -126,8 +127,9 @@ scene.add(pathObject);
 /* Render the scene */
 function animate(time) {
     const duration = 10 // 10 seconds
-    const t = Math.min((time * 0.001) / duration, 1);
-    
+    // const t = Math.min((time * 0.001) / duration, 1); PLAY ONCE
+    const t = ((time * 0.001) / duration) % 1; // LOOP FOREVER
+
     const position = path.getPointAt(t);
     sphere.position.copy(position);
 
@@ -137,6 +139,4 @@ function animate(time) {
     camera.lookAt(sphere.position);
 
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
 }
-requestAnimationFrame(animate);
