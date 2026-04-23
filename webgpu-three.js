@@ -99,19 +99,19 @@ for( let i = 0; i < coneZPos.length; i++ ){
 const particles = [];
 
 for (let i = 0; i < 1000; i++) {
-    const geometry = new THREE.SphereGeometry(0.1, 32, 32);
-    const material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 });
+    const particleGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+    const particleMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 });
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const particle = new THREE.Mesh(particleGeometry, particleMaterial);
 
-    mesh.position.set(
+    particle.position.set(
         (Math.random() - 0.5) * 100,
         (Math.random() - 0.5) * 100,
         (Math.random() - 0.5) * 100
     );
 
-    scene.add(mesh);
-    particles.push(mesh);
+    scene.add(particle);
+    particles.push(particle);
 }
 
 /* Game Simulation */
