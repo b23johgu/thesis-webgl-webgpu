@@ -15,6 +15,8 @@ async function createScene() {
 
     /* Create scene */
     var scene = new BABYLON.Scene(engine);
+    scene.clearColor = new BABYLON.Color3.FromHexString("#000000");
+    
 
     /* Create camera */
     var camera = new BABYLON.UniversalCamera('camera1', new BABYLON.Vector3(0, 5, -30), scene); // 0, 5, -30 (reminder)
@@ -80,6 +82,24 @@ async function createScene() {
         cones.push( cone );
     }
 
+    /* Particles in "air" */
+    const particles = [];
+
+    for (let i = 0; i < 1000; i++) {
+        const particle = BABYLON.MeshBuilder.CreateSphere( 'particle', { segments: 16, diameter: 0.1, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene );
+        const particleMat = new BABYLON.StandardMaterial("particleMat");
+        particleMat.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+        particle.material = particleMat;
+
+        particle.position.set(
+            (Math.random() - 0.5) * 100,
+            (Math.random() - 0.5) * 100,
+            (Math.random() - 0.5) * 100
+        );
+
+        particles.push(particle);
+    }
+
     /* Shadows */
     var shadowGenerator = new BABYLON.ShadowGenerator(1024, dirlight);
 
@@ -128,7 +148,8 @@ async function createScene() {
 
     engine.runRenderLoop(function(){
         const elapsed = (performance.now() - startTime) / 1000; // gives elapsed milliseconds since animation started, divide by 1000 to convert to seconds
-        const t = Math.min(elapsed / duration, 1);
+        //const t = Math.min(elapsed / duration, 1); //Play once
+        const t = (elapsed / duration) % 1; // Loop
 
         const index = Math.floor(t * (pathPoints.length - 1));
         sphere.position.copyFrom(pathPoints[index]);

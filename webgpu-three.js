@@ -4,6 +4,7 @@ import { WebGPURenderer } from 'three/webgpu';
 
 /* Create scene */
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
 
 /* WebGPU renderer + check support */
 let renderer;
@@ -94,6 +95,25 @@ for( let i = 0; i < coneZPos.length; i++ ){
     scene.add(cone);
 }
 
+/* Particles in "air" */
+const particles = [];
+
+for (let i = 0; i < 1000; i++) {
+    const geometry = new THREE.SphereGeometry(0.1, 32, 32);
+    const material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 });
+
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.position.set(
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100
+    );
+
+    scene.add(mesh);
+    particles.push(mesh);
+}
+
 /* Game Simulation */
 const points = [    // x  y  z
     new THREE.Vector3(0, 1, 18), // start
@@ -128,7 +148,7 @@ scene.add(pathObject);
 function animate(time) {
     const duration = 10 // 10 seconds
     // const t = Math.min((time * 0.001) / duration, 1); PLAY ONCE
-    const t = ((time * 0.001) / duration) % 1; // LOOP FOREVER
+    const t = ((time * 0.001) / duration) % 1; // LOOP
 
     const position = path.getPointAt(t);
     sphere.position.copy(position);

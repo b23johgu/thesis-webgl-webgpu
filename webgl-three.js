@@ -87,6 +87,25 @@ for( let i = 0; i < coneZPos.length; i++ ){
     scene.add(cone);
 }
 
+/* Particles in "air" */
+const particles = [];
+
+for (let i = 0; i < 1000; i++) {
+    const geometry = new THREE.SphereGeometry(0.1, 32, 32);
+    const material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 });
+
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.position.set(
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100
+    );
+
+    scene.add(mesh);
+    particles.push(mesh);
+}
+
 /* Game Simulation */
 const points = [    // x  y  z
     new THREE.Vector3(0, 1, 18), // start
