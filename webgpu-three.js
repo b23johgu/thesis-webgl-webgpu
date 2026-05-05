@@ -30,6 +30,8 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // dir light t
 directionalLight.position.set(10, 20, 15);
 directionalLight.castShadow = true;
 
+directionalLight.shadow.mapSize.set(4096, 4096);
+
 // Positions for lightning to make shadows appear
 directionalLight.shadow.camera.left = -20;
 directionalLight.shadow.camera.right = 20;
@@ -49,12 +51,13 @@ floor.receiveShadow = true;
 scene.add(floor);
 
 /* Create a sphere */
-const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+const sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
 const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff00ff , metalness: 0.5, roughness: 0.0 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 sphere.position.y = 1; //makes sphere appear to be on top of floor
 sphere.position.z = 18; //sphere begins at the nearest part of floor, floor is 40 (20 on each side of middle)
 sphere.castShadow = true;
+sphere.receiveShadow = true;
 scene.add(sphere);
 
 /* Create obstacles */
@@ -104,10 +107,13 @@ for (let i = 0; i < 1000; i++) {
 
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
 
+    particle.castShadow = true;
+    particle.receiveShadow = true;
+
     particle.position.set(
-        (Math.random() - 0.5) * 100,
-        (Math.random() - 0.5) * 100,
-        (Math.random() - 0.5) * 100
+        (Math.random() - 0.5) * 50,
+        (Math.random() - 0.5) * 50,
+        (Math.random() - 0.5) * 50
     );
 
     scene.add(particle);

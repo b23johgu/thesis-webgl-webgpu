@@ -36,7 +36,7 @@ async function createScene() {
     floor.material = floorMat;
 
     /* Create a sphere */
-    var sphere = BABYLON.MeshBuilder.CreateSphere('sphere1', {segments: 16, diameter: 2, sideOrientation: BABYLON.Mesh.FRONTSIDE}, scene);
+    var sphere = BABYLON.MeshBuilder.CreateSphere('sphere1', {segments: 32, diameter: 2, sideOrientation: BABYLON.Mesh.FRONTSIDE}, scene);
     const sphereMat = new BABYLON.StandardMaterial("sphereMat");
     sphereMat.diffuseColor = new BABYLON.Color3.FromHexString("#ff00ff");
     sphere.material = sphereMat;
@@ -56,8 +56,6 @@ async function createScene() {
     
         obstacle.position.y = 1;
         obstacle.position.z = obstacleZPos[i];
-
-        obstacle.receiveShadows = true;
     
         obstacles.push( obstacle );
     }
@@ -77,8 +75,6 @@ async function createScene() {
         cone.position.y = 1;
         cone.position.z = coneZPos[i];
 
-        cone.receiveShadows = true;
-    
         cones.push( cone );
     }
 
@@ -92,21 +88,25 @@ async function createScene() {
         particle.material = particleMat;
 
         particle.position.set(
-            (Math.random() - 0.5) * 100,
-            (Math.random() - 0.5) * 100,
-            (Math.random() - 0.5) * 100
+            (Math.random() - 0.5) * 50,
+            (Math.random() - 0.5) * 50,
+            (Math.random() - 0.5) * 50
         );
 
         particles.push(particle);
     }
 
     /* Shadows */
-    var shadowGenerator = new BABYLON.ShadowGenerator(1024, dirlight);
+    var shadowGenerator = new BABYLON.ShadowGenerator(4096, dirlight);
 
     shadowGenerator.addShadowCaster(sphere);
     obstacles.forEach(obs => shadowGenerator.addShadowCaster(obs));
     cones.forEach(obs => shadowGenerator.addShadowCaster(obs));
+    particles.forEach(obs => shadowGenerator.addShadowCaster(obs));
 
+    sphere.receiveShadows = true;
+    cones.receiveShadows = true;
+    obstacles.receiveShadows = true;
     floor.receiveShadows = true;
 
     /* Game Simulation */
