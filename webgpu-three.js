@@ -101,7 +101,7 @@ for( let i = 0; i < coneZPos.length; i++ ){
 /* Particles in "air" */
 const particles = [];
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 5000; i++) {
     const particleGeometry = new THREE.SphereGeometry(0.1, 32, 32);
     const particleMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 });
 

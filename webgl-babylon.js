@@ -71,7 +71,7 @@ var createScene = function(){
     /* Particles in "air" */
     const particles = [];
 
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 5000; i++) {
         const particle = BABYLON.MeshBuilder.CreateSphere( 'particle', { segments: 16, diameter: 0.1, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene );
         const particleMat = new BABYLON.StandardMaterial("particleMat");
         particleMat.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
