@@ -69,21 +69,26 @@ var createScene = function(){
     }
 
     /* Particles in "air" */
+    const particle = BABYLON.MeshBuilder.CreateSphere("particle", { segments: 8, diameter: 0.1 }, scene);
+
+    const particleMat = new BABYLON.StandardMaterial("particleMat", scene);
+    particleMat.diffuseColor = BABYLON.Color3.White();
+    particle.material = particleMat;
+    particle.isVisible = false;   // it's only a template, so it should be invisible :)
+
+    const particleCount = 10000;
     const particles = [];
 
-    for (let i = 0; i < 5000; i++) {
-        const particle = BABYLON.MeshBuilder.CreateSphere( 'particle', { segments: 16, diameter: 0.1, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene );
-        const particleMat = new BABYLON.StandardMaterial("particleMat");
-        particleMat.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
-        particle.material = particleMat;
+    for (let i = 0; i < particleCount; i++) {
+        const instance = particle.createInstance("p" + i);
 
-        particle.position.set(
+        instance.position.set(
             (Math.random() - 0.5) * 50,
             (Math.random() - 0.5) * 50,
             (Math.random() - 0.5) * 50
         );
 
-        particles.push(particle);
+        particles.push(instance);
     }
 
     /* Shadows */
@@ -92,7 +97,6 @@ var createScene = function(){
     shadowGenerator.addShadowCaster(sphere);
     obstacles.forEach(obs => shadowGenerator.addShadowCaster(obs));
     cones.forEach(obs => shadowGenerator.addShadowCaster(obs));
-    particles.forEach(obs => shadowGenerator.addShadowCaster(obs));
 
     sphere.receiveShadows = true;
     cones.receiveShadows = true;

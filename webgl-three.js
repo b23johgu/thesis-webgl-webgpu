@@ -90,26 +90,28 @@ for( let i = 0; i < coneZPos.length; i++ ){
 }
 
 /* Particles in "air" */
-const particles = [];
+const particleCount = 10000;
 
-for (let i = 0; i < 5000; i++) {
-    const particleGeometry = new THREE.SphereGeometry(0.1, 32, 32);
-    const particleMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 });
+const particleGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+const particleMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 });
+const particles = new THREE.InstancedMesh( particleGeometry, particleMaterial, particleCount );
 
-    const particle = new THREE.Mesh(particleGeometry, particleMaterial);
-    
-    particle.castShadow = true;
-    particle.receiveShadow = true;
+scene.add(particles);
 
-    particle.position.set(
+const instance = new THREE.Object3D();
+
+for (let i = 0; i < particleCount; i++) {
+    instance.position.set(
         (Math.random() - 0.5) * 50,
         (Math.random() - 0.5) * 50,
         (Math.random() - 0.5) * 50
     );
 
-    scene.add(particle);
-    particles.push(particle);
+    instance.updateMatrix();
+    particles.setMatrixAt(i, instance.matrix);
 }
+
+particles.instanceMatrix.needsUpdate = true;
 
 /* Game Simulation */
 const points = [    // x  y  z
